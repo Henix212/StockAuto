@@ -2,11 +2,6 @@
 #include "servoMoteur.h"
 #include "stm32g4_timer.h"
 
-#define PERIOD 10               // Période PWM en ms
-#define MIN_STEP 50             // Duty cycle minimum (1 ms pour position 0°)
-#define MAX_STEP 150            // Duty cycle maximum (2 ms pour position 90°)
-#define DEFAULT_POSITION 50    // Duty cycle par défaut (1.5 ms pour position neutre)
-
 void INIT_servo(void) {
     // Initialiser le timer avec une période de 10 ms
     BSP_TIMER_run_us(TIMER1_ID, PERIOD * 1000, false);

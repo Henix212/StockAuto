@@ -3,10 +3,10 @@
 
 #include <stdint.h>
 
-#define DEFAULT_POSITION 0
-#define CLOSE_STEP 1
-#define OPEN_STEP 2
-#define MAX_STEP 90
+#define PERIOD 10               // Période PWM en ms
+#define MIN_STEP 50             // Duty cycle minimum (1 ms pour position 0°)
+#define MAX_STEP 150            // Duty cycle maximum (2 ms pour position 90°)
+#define DEFAULT_POSITION 50    // Duty cycle par défaut (1.5 ms pour position neutre)
 
 void INIT_servo(void);
 void SET_position(uint16_t position, char mouvement);
