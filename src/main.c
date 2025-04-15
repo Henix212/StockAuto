@@ -1,21 +1,22 @@
 #include "stm32g4xx_hal.h"
 #include "servoMoteur.h"
+
 int main(int argc, char const *argv[])
 {
     HAL_Init();  // Initialisation de la HAL
 
-    INIT_servo();
+    INIT_servo();  // Initialiser le servo
 
-    int position = 0;
+    SET_default_position();  // Position par défaut
 
-    while(1){
-        while (position <= 100){
-            position += 3;
-            SET_position(position);
-            HAL_Delay(10);  // Attendre 1 seconde
-        }
-        HAL_Delay(250);  // Attendre 1 seconde
-        position = 0;
-        HAL_Delay(2000);
+    while(1) {
+        HAL_Delay(20);  // Attendre 1 seconde
+
+        close_();
+
+        HAL_Delay(20);
+
+        open_();
     }
 }
+
