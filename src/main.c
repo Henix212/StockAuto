@@ -19,9 +19,9 @@ int main(int argc, char const *argv[]) // Correction : int au lieu de void
 
         for (int i = 0; i < 200; i++) {
             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);   // STEP HIGH
-            HAL_Delay(1); // ou HAL_Delay_us() pour plus précis
+            HAL_Delay(10); // ou HAL_Delay_us() pour plus précis
             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET); // STEP LOW
-            HAL_Delay(1); // ou HAL_Delay_us() pour plus précis
+            HAL_Delay(10); // ou HAL_Delay_us() pour plus précis
         }
     }
 
