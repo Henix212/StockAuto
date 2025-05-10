@@ -1,12 +1,15 @@
 #include <stm32g4xx_hal.h>
 #include <stm32g4xx_hal_i2c.h>
 #include <stm32g4xx_hal_gpio.h>
-
-#define OLED_ADDR (0x3C << 1)
+#define OLED_ADDR (0x3F << 1)
 
 int main(int argc, char const *argv[])
 {
     HAL_Init();
+
+    // SystemClock_Config();
+
+    // MX_GPIO_Init();
 
     __HAL_RCC_GPIOB_CLK_ENABLE(); // Active horloge GPIOB
     __HAL_RCC_GPIOA_CLK_ENABLE(); // Active horloge GPIOA
@@ -57,31 +60,40 @@ int main(int argc, char const *argv[])
 
     HAL_I2C_Init(&hi2c);
 
-    uint8_t command[] = {
-        0xAE,
-        0xAF,
-        0xA5,
-        0xAE,
-        0xAF,
-        0xA5,
-        0xAE,
-        0xAF,
-        0xA5,
-        0xAE,
-        0xAF,
-        0xA5,
-        0xAE,
-        0xAF,
-        0xA5,
+    uint8_t init[] = {
+        0x2C, 0x28,
+
+        0x0C, 0x08,
+        0xCC, 0xC8, 
+
+        0x0C, 0x08,
+        0x6C, 0x68,
     };
 
-    // uint8_t co = 0xA5;
+    // uint8_t co = 0x01;
 
-    for (uint8_t i = 0; i <= sizeof(command); i++) {
-        HAL_Delay(10);
-        if (HAL_I2C_Master_Transmit(&hi2c, OLED_ADDR, &command[i], sizeof(command[i]), HAL_MAX_DELAY) == HAL_OK) {
-            HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
-        }
+    // HAL_Delay(100);
+
+    // if (HAL_I2C_Master_Transmit(&hi2c, OLED_ADDR, &co, 1, HAL_MAX_DELAY) == HAL_OK) {
+    //     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
+    // }
+
+    HAL_Delay(100);
+
+    for (uint8_t i = 0; i < sizeof(init); i++) {
+        HAL_I2C_Master_Transmit(&hi2c, OLED_ADDR, &init[i], 1, HAL_MAX_DELAY);
+        HAL_Delay(15);
+    }
+
+    HAL_Delay(100);
+
+    uint8_t data[] = {
+        
+    };
+
+    for (uint8_t i = 0; i < sizeof(data); i++) {
+        HAL_I2C_Master_Transmit(&hi2c, OLED_ADDR, &data[i], 1, HAL_MAX_DELAY);
+        HAL_Delay(5);
     }
 
     while (1) {
