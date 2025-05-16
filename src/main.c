@@ -13,7 +13,7 @@ int main(int argc, char const *argv[])
     MX_GPIO_Init();
     MX_I2C1_Init();
 
-    uint8_t init[22] = {
+    uint8_t init[20] = {
         0xA8, 0x3F,
         0xD3, 0x00,
         0x40,
@@ -41,7 +41,7 @@ int main(int argc, char const *argv[])
 /// @param command 
 void OLED_sendCommand(uint8_t command) {
     uint8_t data[2] = {0x00, command};
-    I2C_Transmit(OLED_ADDR, data);
+    I2C_TransmitDualByte(OLED_ADDR, data);
 }
 
 //

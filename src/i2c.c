@@ -1,4 +1,10 @@
-/* USER CODE BEGIN Header */
+/**
+ *  I2C Library to send 1, 2 or an array of bytes through i2c1 channel. Generated with CubeMX 
+ *  and then added 3 functions at the end to simplify the i2c communication.
+ * 
+ *  @author StockAuto 
+ */
+
 /**
  ******************************************************************************
  * @file    i2c.c
@@ -16,26 +22,14 @@
  *
  ******************************************************************************
  */
-/* USER CODE END Header */
-/* Includes ------------------------------------------------------------------*/
+
 #include "i2c.h"
-
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
 
 I2C_HandleTypeDef hi2c1;
 
 /* I2C1 init function */
 void MX_I2C1_Init(void)
 {
-    /* USER CODE BEGIN I2C1_Init 0 */
-
-    /* USER CODE END I2C1_Init 0 */
-
-    /* USER CODE BEGIN I2C1_Init 1 */
-
-    /* USER CODE END I2C1_Init 1 */
     hi2c1.Instance = I2C1;
     hi2c1.Init.Timing = 0x00503D58;
     hi2c1.Init.OwnAddress1 = 0;
@@ -50,37 +44,26 @@ void MX_I2C1_Init(void)
         Error_Handler();
     }
 
-    /** Configure Analogue filter
-     */
+    /** Configure Analogue filter */
     if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
     {
         Error_Handler();
     }
 
-    /** Configure Digital filter
-     */
+    /** Configure Digital filter */
     if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
     {
         Error_Handler();
     }
-    /* USER CODE BEGIN I2C1_Init 2 */
-
-    /* USER CODE END I2C1_Init 2 */
 }
 
 void HAL_I2C_MspInit(I2C_HandleTypeDef *i2cHandle)
 {
-
     GPIO_InitTypeDef GPIO_InitStruct = {0};
     RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
     if (i2cHandle->Instance == I2C1)
     {
-        /* USER CODE BEGIN I2C1_MspInit 0 */
-
-        /* USER CODE END I2C1_MspInit 0 */
-
-        /** Initializes the peripherals clocks
-         */
+        /** Initializes the peripherals clocks */
         PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_I2C1;
         PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;
         if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
@@ -110,9 +93,6 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef *i2cHandle)
 
         /* I2C1 clock enable */
         __HAL_RCC_I2C1_CLK_ENABLE();
-        /* USER CODE BEGIN I2C1_MspInit 1 */
-
-        /* USER CODE END I2C1_MspInit 1 */
     }
 }
 
@@ -121,9 +101,6 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef *i2cHandle)
 
     if (i2cHandle->Instance == I2C1)
     {
-        /* USER CODE BEGIN I2C1_MspDeInit 0 */
-
-        /* USER CODE END I2C1_MspDeInit 0 */
         /* Peripheral clock disable */
         __HAL_RCC_I2C1_CLK_DISABLE();
 
@@ -134,18 +111,34 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef *i2cHandle)
         HAL_GPIO_DeInit(GPIOA, GPIO_PIN_15);
 
         HAL_GPIO_DeInit(GPIOB, GPIO_PIN_7);
-
-        /* USER CODE BEGIN I2C1_MspDeInit 1 */
-
-        /* USER CODE END I2C1_MspDeInit 1 */
     }
 }
 
 /* USER CODE BEGIN 1 */
 
-void I2C_Transmit(uint16_t addr, uint8_t* data)
+/// @brief Transmits a byte through i2c1 channel
+/// @param addr The device address
+/// @param data The byte to send
+void I2C_TransmitByte(uint16_t addr, uint8_t data)
 {
-    HAL_I2C_Master_Transmit(&hi2c1, addr, data, sizeof(data), HAL_MAX_DELAY);
+    HAL_I2C_Master_Transmit(&hi2c1, addr, &data, 1, HAL_MAX_DELAY);
+}
+
+/// @brief Transmit 2 bytes through i2c1 channel
+/// @param addr The address of the device
+/// @param data The 2 bytes to send
+void I2C_TransmitDualByte(uint16_t addr, uint8_t *data)
+{
+    HAL_I2C_Master_Transmit(&hi2c1, addr, data, 2, HAL_MAX_DELAY);
+}
+
+/// @brief Transmits a séquence of bytes through i2c1 channelS.
+/// @param addr The address of the device
+/// @param data The sequence of byte
+/// @param dataSize The length of the sequence to send (number of bytes)
+void I2C_TransmitBytes(uint16_t addr, uint8_t *data, uint16_t dataSize)
+{
+    HAL_I2C_Master_Transmit(&hi2c1, addr, data, dataSize, HAL_MAX_DELAY);
 }
 
 /* USER CODE END 1 */
