@@ -22,7 +22,7 @@ void SET_position(uint16_t position, char mouvement) {
             uint32_t voltage_mv = (adc_value * 3300) / 4096;
 
             if (voltage_mv > 10) {
-                hold_(step_position);  // Sortir de la boucle si la valeur ADC dépasse 17 mV
+                hold_(step_position);  // Sortir de la boucle si la valeur ADC dépasse 10 mV
                 break;
             }
 
