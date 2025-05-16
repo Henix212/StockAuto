@@ -17,7 +17,7 @@ char keymap[4][4] = {
     {'*', '0', '#', 'D'}
 };
 
-char keypad_getkey(void) {
+int keypad_getkey(void) {
     for (int row = 0; row < 4; row++) {
         // Toutes les lignes à HIGH
         for (int i = 0; i < 4; i++) {
@@ -39,5 +39,28 @@ char keypad_getkey(void) {
         }
     }
 
-    return '\0';  // aucune touche pressée
+    return 0;  // aucune touche pressée
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+    // Scanner les lignes pour trouver la touche pressée
+    for (int row = 0; row < 4; row++) {
+        // Mettre toutes les lignes à HIGH
+        for (int i = 0; i < 4; i++)
+            HAL_GPIO_WritePin(rowPorts[i], rowPins[i], GPIO_PIN_SET);
+
+        // Activer la ligne courante
+        HAL_GPIO_WritePin(rowPorts[row], rowPins[row], GPIO_PIN_RESET);
+
+        // Vérifier si la colonne déclenchée est LOW
+        for (int col = 0; col < 4; col++) {
+            if (colPins[col] == GPIO_Pin) {
+                if (HAL_GPIO_ReadPin(colPorts[col], colPins[col]) == GPIO_PIN_RESET) {
+                    char touche = keymap[row][col];
+                    // Traiter la touche ici (ex : stocker dans une variable globale)
+                    last_key = touche;
+                }
+            }
+        }
+    }
 }

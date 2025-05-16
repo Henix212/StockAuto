@@ -7,25 +7,35 @@ void Error_Handler(void) {
 
 int main(void) {
     HAL_Init();
+
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    GPIO_InitTypeDef gpio = {0};
+
+    // Lignes = sorties
+    gpio.Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_4 | GPIO_PIN_5;
+    gpio.Mode = GPIO_MODE_OUTPUT_PP;
+    gpio.Pull = GPIO_NOPULL;
+    gpio.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOA, &gpio);
+
+    // Colonnes = entrées avec pull-up
+    gpio.Pin = GPIO_PIN_6 | GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9;
+    gpio.Mode = GPIO_MODE_IT_FALLING;
+    gpio.Pull = GPIO_PULLUP;
+    HAL_GPIO_Init(GPIOA, &gpio);
+
+    HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+
     SystemClock_Config();
-    MX_GPIO_Init();
 
     while (1) {
-        char key = keypad_getkey();  // Récupère la touche pressée
-
-        if (key == '1') {
-            // 💡 Mets un point d'arrêt ici
-            int test = 1;  // tu peux voir "test" dans le débogueur
+    if (last_key != 0) {
+        // Une touche a été pressée
+        if (last_key == '1') {
+            // Action
         }
-        else if (key == '2') {
-            // 💡 Mets un autre point d'arrêt ici
-            int test = 2;
+        last_key = 0; // Reset après traitement
         }
-        else if (key == '*') {
-            // 💡 Encore un test
-            int test = 99;
-        }
-
-        HAL_Delay(100);  // petite pause pour éviter répétition
     }
 }
