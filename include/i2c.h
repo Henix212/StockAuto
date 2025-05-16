@@ -38,7 +38,11 @@ void MX_I2C1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 
+void I2C_TransmitByte(uint16_t addr, uint8_t data);
+
 void I2C_TransmitDualByte(uint16_t addr, uint8_t* data);
+
+void I2C_TransmitBytes(uint16_t addr, uint8_t* data, uint16_t sizeData);
 
 /* USER CODE END Prototypes */
 
