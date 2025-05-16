@@ -8,6 +8,13 @@ int main(int argc, char const *argv[])
 
     MX_GPIO_Init();
     MX_I2C1_Init();
+    
+    /**
+     * BROCHES : 
+     * 
+     *      => PA15 : SCL
+     *      => PB7  : SDA
+     */
 }
 
 //
