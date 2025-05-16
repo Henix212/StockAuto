@@ -28,6 +28,8 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32g4xx_hal.h"
+#include "i2c.h"
+#include "gpio.h"
 
 #include <stdio.h>
 
@@ -53,6 +55,7 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
+void SystemClock_Config(void);
 
 /* USER CODE BEGIN EFP */
 
@@ -68,7 +71,6 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN Private defines */
 
-/* USER CODE END Private defines */
 
 #ifdef __cplusplus
 }
