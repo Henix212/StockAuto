@@ -1,7 +1,8 @@
 #include <stm32g4xx_hal.h>
 #include <stm32g4xx_hal_i2c.h>
 #include <stm32g4xx_hal_gpio.h>
-#define OLED_ADDR (0x3F << 1)
+// LCD 0x3F
+#define OLED_ADDR (0x3C << 1)
 
 int main(int argc, char const *argv[])
 {
@@ -56,47 +57,34 @@ int main(int argc, char const *argv[])
     };
     // INFO Periode SCL 2.8 micro secs 
 
-    // TODO : regler le time clock + mx pour input output + UART pour le printf
-
     HAL_I2C_Init(&hi2c);
 
-    uint8_t init[] = {
-        0x2C, 0x28,
-
-        0x0C, 0x08,
-        0xCC, 0xC8, 
-
-        0x0C, 0x08,
-        0x6C, 0x68,
+    uint8_t init[22][2] = {
+        {0x00, 0xA8},  {0x00, 0x3F},  // Multiplex ratio
+        {0x00, 0xD3},  {0x00, 0x00},  // Display offset
+        {0x00, 0x40},                 // Start line
+        {0x00, 0xA0},  {0x00, 0xA1},  // Segment remap
+        {0x00, 0x20},  {0x00, 0x00},  // Memory addressing mode
+        {0x00, 0xC0},  {0x00, 0xC8},  // COM scan direction
+        {0x00, 0xDA},  {0x00, 0x02},  // COM pins hardware config
+        {0x00, 0x81},  {0x00, 0x7F},  // Contrast
+        {0x00, 0xA5},  
+        {0x00, 0xA6},                 // Normal display
+        {0x00, 0xD5},  {0x00, 0x80},
+        {0x00, 0x8D},  {0x00, 0x14},  // Pre-charge
+        {0x00, 0xAF}                  // Display ON
     };
-
-    // uint8_t co = 0x01;
-
-    // HAL_Delay(100);
-
-    // if (HAL_I2C_Master_Transmit(&hi2c, OLED_ADDR, &co, 1, HAL_MAX_DELAY) == HAL_OK) {
-    //     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
-    // }
-
-    HAL_Delay(100);
 
     for (uint8_t i = 0; i < sizeof(init); i++) {
-        HAL_I2C_Master_Transmit(&hi2c, OLED_ADDR, &init[i], 1, HAL_MAX_DELAY);
-        HAL_Delay(15);
-    }
-
-    HAL_Delay(100);
-
-    uint8_t data[] = {
-        
-    };
-
-    for (uint8_t i = 0; i < sizeof(data); i++) {
-        HAL_I2C_Master_Transmit(&hi2c, OLED_ADDR, &data[i], 1, HAL_MAX_DELAY);
-        HAL_Delay(5);
+        HAL_I2C_Master_Transmit(&hi2c, OLED_ADDR, init[i], sizeof(init[i]), HAL_MAX_DELAY);
     }
 
     while (1) {
 
     }
+}
+
+void sendComand(I2C_HandleTypeDef* hi2c, uint8_t command) {
+    uint8_t data[2] = {0x00, command};
+    HAL_I2C_Master_Transmit(hi2c, OLED_ADDR, data, sizeof(data), HAL_MAX_DELAY);
 }
