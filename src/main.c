@@ -1,9 +1,5 @@
 #include "main.h"
 
-#define OLED_ADDR (0x3C << 1)
-
-void OLED_sendCommand(uint8_t command);
-
 int main(int argc, char const *argv[])
 {
     HAL_Init();
@@ -13,35 +9,17 @@ int main(int argc, char const *argv[])
     MX_GPIO_Init();
     MX_I2C1_Init();
 
-    uint8_t init[20] = {
-        0xA8, 0x3F,
-        0xD3, 0x00,
-        0x40,
-        0xA0, 0xA1,
-        0xC0, 0xC8,
-        0xDA, 0x02,
-        0x81, 0x7F,
-        0xA5,
-        0xA6,
-        0xD5, 0x80,
-        0x8D, 0x14,
-        0xAF
-    };
+    OLED_Init();
 
-    for (uint8_t i = 0; i < sizeof(init); i++) {
-        OLED_sendCommand(init[i]);
-    }
+    OLED_SetCursor(0, 0);
+
+    OLED_Clear();
+
+    OLED_Print("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
     while (1) {
-
+        
     }
-}
-
-/// @brief Sends a command th
-/// @param command 
-void OLED_sendCommand(uint8_t command) {
-    uint8_t data[2] = {0x00, command};
-    I2C_TransmitDualByte(OLED_ADDR, data);
 }
 
 //

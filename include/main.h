@@ -30,6 +30,7 @@ extern "C" {
 #include "stm32g4xx_hal.h"
 #include "i2c.h"
 #include "gpio.h"
+#include "oled.h"
 
 #include <stdio.h>
 
