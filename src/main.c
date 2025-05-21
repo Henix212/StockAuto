@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
 
     OLED_Clear();
 
-    OLED_Print("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    OLED_Print("Press # to confirm !");
 
     while (1) {
         
