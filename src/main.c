@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
 
     OLED_Clear();
 
-    OLED_Print("Press # to confirm !");
+    PAGE_Action();
 
     while (1) {
         

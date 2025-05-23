@@ -21,6 +21,21 @@
 #define OLED_PIXEL_ON 1
 #define OLED_PIXEL_OFF 0
 
+typedef enum {
+    OLED_INVERTED,
+    OLED_NON_INVERTED
+} OLED_InversionMode;
+
+typedef enum {
+    OLED_BAR_ON,
+    OLED_BAR_OFF
+} OLED_BarMode;
+
+typedef enum {
+    OLED_FONT_COLOR_BLACK,
+    OLED_FONT_COLOR_COLORED
+} OLED_FontColor;
+
 void OLED_Init();
 
 void OLED_SendCommand(uint8_t command);
@@ -29,16 +44,22 @@ void OLED_SendData(uint8_t* data, uint16_t dataSize);
 
 void OLED_SetCursor(uint8_t x, uint8_t y);
 
+void OLED_SetInverted(OLED_InversionMode mode);
+
+void OLED_SetBar(OLED_BarMode mode);
+
 //
 // Graphic functions
 //  
 
 void OLED_Clear();
 
-void OLED_SetPixel(int x, int y, uint8_t state);
+void OLED_SetPixel(uint8_t x, uint8_t y, uint8_t state);
 
-void OLED_PutChar(char c);
+void OLED_PutChar(char c, OLED_FontColor color);
 
-void OLED_Print(char* str);
+void OLED_Print(char* str, OLED_FontColor color);
+
+void OLED_CenterPrint(char* str, uint8_t x, uint8_t y, OLED_FontColor color);
 
 #endif /* __OLED_H__ */

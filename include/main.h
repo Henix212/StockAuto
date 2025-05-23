@@ -31,6 +31,7 @@ extern "C" {
 #include "i2c.h"
 #include "gpio.h"
 #include "oled.h"
+#include "pages.h"
 
 #include <stdio.h>
 

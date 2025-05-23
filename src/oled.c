@@ -19,13 +19,13 @@ void OLED_Init()
     // Initialisation sequence
     uint8_t init[] = {
         0xA8, 0x3F,
-        0xD3, 0x01,
+        0xD3, 0x00,
         0x20, 0x00,
         0x40,
         0xA1,
         0xC8,
         0xDA, 0x12,
-        0x81, 0xE7,
+        0x81, 0x7F,
         0xA4,
         0xA6,
         0xD5, 0x80,
@@ -65,9 +65,9 @@ void OLED_SendData(uint8_t *data, uint16_t dataSize)
     I2C_TransmitBytes(OLED_ADDR, buffer, sizeof(buffer));
 }
 
-/// @brief Places the cursor at the x, y location
+/// @brief Places the cursor at the x, y position (y being the page ...)
 /// @param x
-/// @param y
+/// @param y The page not exactly the y
 void OLED_SetCursor(uint8_t x, uint8_t y)
 {
     // Checking the values of X and Y
@@ -82,7 +82,46 @@ void OLED_SetCursor(uint8_t x, uint8_t y)
     OLED_SendCommand(OLED_WIDTH - 1);
 
     // Y
-    OLED_SendCommand(0x7F - y);
+    OLED_SendCommand(0x22);
+    OLED_SendCommand(0xA0 | y);
+    OLED_SendCommand(0xB0);
+}
+
+/**
+ * @brief Inverses the color of the background and the one of the text.
+ */
+void OLED_SetInverted(OLED_InversionMode mode)
+{
+    if (mode == OLED_INVERTED) {
+        OLED_SendCommand(0xA7);
+    } else if (mode == OLED_NON_INVERTED) {
+        OLED_SendCommand(0xA6);
+    } else {
+        Error_Handler();
+    }
+}
+
+/**
+ * @brief Toggle ON/OFF the whole status bar
+ */
+void OLED_SetBar(OLED_BarMode mode)
+{
+    const uint16_t SIZE = 256;
+    uint8_t buffer[SIZE];
+
+    uint8_t byte = 0x01; // If not set then error
+    if (mode == OLED_BAR_ON) {
+        byte = 0xFF;
+    } else if (mode == OLED_BAR_OFF) {
+        byte = 0x00;
+    } else {
+        // ERROR
+    }
+
+    memset(buffer, byte, SIZE);
+
+    OLED_SetCursor(0, 0);
+    OLED_SendData(buffer, SIZE);
 }
 
 //
@@ -103,7 +142,7 @@ void OLED_Clear()
 /// @param x
 /// @param y
 /// @param state The state of the pixel OLED_PIXEL_ON / OLED_PIXEL_OFF
-void OLED_SetPixel(int x, int y, uint8_t state)
+void OLED_SetPixel(uint8_t x, uint8_t y, uint8_t state)
 {
     OLED_SetCursor(x, y);
 
@@ -121,7 +160,7 @@ void OLED_SetPixel(int x, int y, uint8_t state)
  */
 static uint8_t *get_font(char c)
 {
-    static uint8_t font[][5] = {
+    static uint8_t font[][5] = {// By ChatGPT
         [' '] = {0x00, 0x00, 0x00, 0x00, 0x00},
         ['!'] = {0x00, 0x00, 0x5F, 0x00, 0x00},
         ['"'] = {0x00, 0x07, 0x00, 0x07, 0x00},
@@ -216,24 +255,71 @@ static uint8_t *get_font(char c)
         ['{'] = {0x00, 0x08, 0x36, 0x41, 0x00},
         ['|'] = {0x00, 0x00, 0x7F, 0x00, 0x00},
         ['}'] = {0x00, 0x41, 0x36, 0x08, 0x00},
-        ['~'] = {0x08, 0x08, 0x2A, 0x1C, 0x08}};
+        ['~'] = {0x08, 0x08, 0x2A, 0x1C, 0x08}
+    };
     return font[(unsigned char)c];
 }
 
 /**
  * @brief Displays a char on the screen by sending a byte array (see get_font above)
  * @param c The char ot display
+ * @param color The color of the char colored or black
  */
-void OLED_PutChar(char c)
+void OLED_PutChar(char c, OLED_FontColor color)
 {
+    const uint8_t FONT_WIDTH = 5;
+
     uint8_t *data = get_font(c);
-    OLED_SendData(data, 5);
-    uint8_t esp = 0x00;
+    if (color == OLED_FONT_COLOR_BLACK) {
+        for (uint8_t i = 0; i < FONT_WIDTH; i++) {
+            data[i]^= 0xFF; 
+        }
+    }
+
+    OLED_SendData(data, FONT_WIDTH);
+    uint8_t esp = (color == OLED_FONT_COLOR_BLACK) ? 0xFF : 0x00;
     OLED_SendData(&esp, 1);
 }
 
-void OLED_Print(char* str) {
-    for (int i = 0; i < strlen(str); i++) {
-        OLED_PutChar(str[i]);
+/**
+ * @brief Prints a text to the current cursor position usin OLED_PutChar()
+ * @param str The text to print
+ * @param color The color of the print colored or black
+ */
+void OLED_Print(char *str, OLED_FontColor color)
+{
+    for (int i = 0; i < strlen(str); i++)
+    {
+        OLED_PutChar(str[i], color);
     }
+}
+
+/**
+ * @brief Prints a string put the reference point is at the center of the x
+ * axis of the string and at the top the y axis
+ *
+ * @param str The string to print
+ * @param x The coordinate x (CENTER of the string)
+ * @param y The coordinate y (TOP of the string)
+ * @param color The color of the print colored or black
+ */
+void OLED_CenterPrint(char *str, uint8_t x, uint8_t y, OLED_FontColor color)
+{
+    uint16_t strLen = strlen(str);
+
+    const CHAR_TOTAL_WIDTH = 6;
+
+    uint8_t offsetX = 0;
+    if (strLen % 2 == 0)
+    {
+        offsetX = -CHAR_TOTAL_WIDTH * strLen / 2;
+    }
+    else
+    {
+        offsetX = -CHAR_TOTAL_WIDTH * (strLen - 1) / 2 - CHAR_TOTAL_WIDTH / 2;
+    }
+
+    OLED_SetCursor(x + offsetX, y);
+
+    OLED_Print(str, color);
 }
