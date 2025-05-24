@@ -131,6 +131,7 @@ void OLED_SetBar(OLED_BarMode mode)
 /// @brief Clears the screen filling it with black pixels
 void OLED_Clear()
 {
+    OLED_SetCursor(0, 0);
     uint16_t size = OLED_WIDTH * OLED_HEIGHT / 8;
     uint8_t buffer[size + 1];
     buffer[0] = 0x40;

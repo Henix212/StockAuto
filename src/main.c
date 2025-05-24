@@ -11,15 +11,26 @@ int main(int argc, char const *argv[])
 
     OLED_Init();
 
-    OLED_SetCursor(0, 0);
-
     OLED_Clear();
 
     PAGE_Lockers((PAGES_LockersStatus) {{LOCKER_EMPTY, LOCKER_OCCUPIED, LOCKER_EMPTY, LOCKER_EMPTY}});
+    
+    // uint8_t j = 0;
 
-    while (1) {
-        
-    }
+    // while (1) {
+    //     uint8_t m[4] = {0, 0, 0, 0};
+
+    //     m[j] = 1;
+    //     j++;
+    //     if (j >= 4) {
+    //         j = 0;
+    //     }
+
+    //     OLED_Clear();
+    //     PAGE_Lockers((PAGES_LockersStatus) {{m[0], m[1], m[2], m[3]}});
+
+    //     HAL_Delay(50);
+    // }
 }
 
 //
