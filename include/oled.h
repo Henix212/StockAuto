@@ -18,8 +18,12 @@
 #define OLED_WIDTH 128 // Pixels
 #define OLED_HEIGHT 64 // Pixels
 
+#define ICON_SIZE 8 // CANNOT BE MODIFIED
+
 #define OLED_PIXEL_ON 1
 #define OLED_PIXEL_OFF 0
+
+// Structrures
 
 typedef enum {
     OLED_INVERTED,
@@ -35,6 +39,10 @@ typedef enum {
     OLED_FONT_COLOR_BLACK,
     OLED_FONT_COLOR_COLORED
 } OLED_FontColor;
+
+typedef struct {
+    uint8_t map[ICON_SIZE];
+} OLED_Icon;
 
 void OLED_Init();
 
@@ -61,5 +69,26 @@ void OLED_PutChar(char c, OLED_FontColor color);
 void OLED_Print(char* str, OLED_FontColor color);
 
 void OLED_CenterPrint(char* str, uint8_t x, uint8_t y, OLED_FontColor color);
+
+void OLED_PutIcon(OLED_Icon* icon, uint8_t x, uint8_t y);
+
+//
+//  Icons
+//
+
+extern OLED_Icon OLED_SQUARE;
+extern OLED_Icon OLED_EMPTY_SQUARE;
+extern OLED_Icon OLED_CROSS;
+extern OLED_Icon OLED_EMPTY_CROSS;
+extern OLED_Icon OLED_ARROW_UP;
+extern OLED_Icon OLED_ARROW_DOWN;
+extern OLED_Icon OLED_ARROW_LEFT;
+extern OLED_Icon OLED_ARROW_RIGHT;
+extern OLED_Icon OLED_EMPTY_ARROW_UP;
+extern OLED_Icon OLED_EMPTY_ARROW_DOWN;
+extern OLED_Icon OLED_EMPTY_ARROW_LEFT;
+extern OLED_Icon OLED_EMPTY_ARROW_RIGHT;
+extern OLED_Icon OLED_ROUND;
+extern OLED_Icon OLED_CIRCLE;
 
 #endif /* __OLED_H__ */

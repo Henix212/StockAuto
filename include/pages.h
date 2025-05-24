@@ -6,15 +6,30 @@
  *  @author StockAuto
  */
 
- #ifndef __PAGES_H__
- #define __PAGES_H__
+#ifndef __PAGES_H__
+#define __PAGES_H__
 
- #include "oled.h"
+#include "oled.h"
 
- /**
-  * PAGES
-  */
+#define PAGES_NB_LOCKERS 4
+
+// Structures
+typedef enum {
+    LOCKER_OCCUPIED,
+    LOCKER_EMPTY
+} PAGES_LockerStatus;
+typedef struct {
+    PAGES_LockerStatus map[PAGES_NB_LOCKERS];
+} PAGES_LockersStatus;
+
+/**
+ * PAGES
+ */
 
 void PAGE_Start();
 
- #endif /* __PAGES_H__ */
+void PAGE_Action();
+
+void PAGE_Lockers(PAGES_LockersStatus status);
+
+#endif /* __PAGES_H__ */

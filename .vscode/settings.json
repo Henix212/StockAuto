@@ -6,6 +6,7 @@
         "stdio.h": "c",
         "stm32g4xx_hal_gpio.h": "c",
         "main.h": "c",
-        "stm32g4xx_nucleo.h": "c"
+        "stm32g4xx_nucleo.h": "c",
+        "oled.h": "c"
     }
 }

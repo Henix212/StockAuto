@@ -269,10 +269,12 @@ void OLED_PutChar(char c, OLED_FontColor color)
 {
     const uint8_t FONT_WIDTH = 5;
 
-    uint8_t *data = get_font(c);
+    uint8_t* dataSrc = get_font(c);
+    uint8_t data[FONT_WIDTH];
+    memcpy(data, dataSrc, FONT_WIDTH);
     if (color == OLED_FONT_COLOR_BLACK) {
         for (uint8_t i = 0; i < FONT_WIDTH; i++) {
-            data[i]^= 0xFF; 
+            data[i]^= 0xFF;
         }
     }
 
@@ -307,7 +309,7 @@ void OLED_CenterPrint(char *str, uint8_t x, uint8_t y, OLED_FontColor color)
 {
     uint16_t strLen = strlen(str);
 
-    const CHAR_TOTAL_WIDTH = 6;
+    const uint8_t CHAR_TOTAL_WIDTH = 6;
 
     uint8_t offsetX = 0;
     if (strLen % 2 == 0)
@@ -323,3 +325,203 @@ void OLED_CenterPrint(char *str, uint8_t x, uint8_t y, OLED_FontColor color)
 
     OLED_Print(str, color);
 }
+
+/**
+ * @brief Draws an icon on the screen
+ * @param x
+ * @param y
+ * @param icon The icon to draw (see OLED_Icon to create your own)
+ */
+void OLED_PutIcon(OLED_Icon* icon, uint8_t x, uint8_t y) {
+    uint8_t buffer[ICON_SIZE];
+    memcpy(buffer, icon->map, ICON_SIZE);
+    OLED_SetCursor(x, y);
+    OLED_SendData(buffer, ICON_SIZE);
+}
+
+/**
+ * Icons (a list of the available ones)
+ */
+
+OLED_Icon OLED_SQUARE = 
+{
+    {
+        0b11111111,
+        0b11111111,
+        0b11111111,
+        0b11111111,
+        0b11111111,
+        0b11111111,
+        0b11111111,
+        0b11111111,
+    }
+};
+
+OLED_Icon OLED_EMPTY_SQUARE = {
+    {
+        0b11111111,
+        0b10000001,
+        0b10000001,
+        0b10000001,
+        0b10000001,
+        0b10000001,
+        0b10000001,
+        0b11111111,
+    }
+};
+
+OLED_Icon OLED_CROSS = {
+    {
+        0b11000011,
+        0b11100111,
+        0b01111110,
+        0b00111100,
+        0b00111100,
+        0b01111110,
+        0b11100111,
+        0b11000011,
+    }
+};
+
+OLED_Icon OLED_EMPTY_CROSS = {
+    {
+        0b10000001,
+        0b01000010,
+        0b00100100,
+        0b00011000,
+        0b00011000,
+        0b00100100,
+        0b01000010,
+        0b10000001,
+    }
+};
+
+OLED_Icon OLED_ARROW_UP = {
+    {
+        0b00000000,
+        0b00001100,
+        0b00001110,
+        0b11111111,
+        0b11111111,
+        0b00001110,
+        0b00001100,
+        0b00000000,
+    }
+};
+
+OLED_Icon OLED_ARROW_DOWN = {
+    {
+        0b00000000,
+        0b00110000,
+        0b01110000,
+        0b11111111,
+        0b11111111,
+        0b01110000,
+        0b00110000,
+        0b00000000,
+    }
+};
+
+OLED_Icon OLED_ARROW_LEFT = {
+    {
+        0b00011000,
+        0b00111100,
+        0b01111110,
+        0b01111110,
+        0b00011000,
+        0b00011000,
+        0b00011000,
+        0b00011000,
+    }
+};
+
+OLED_Icon OLED_ARROW_RIGHT = {
+    {
+        0b00011000,
+        0b00011000,
+        0b00011000,
+        0b00011000,
+        0b01111110,
+        0b01111110,
+        0b00111100,
+        0b00011000,
+    }
+};
+
+OLED_Icon OLED_EMPTY_ARROW_UP = {
+    {
+        0b00010000,
+        0b00110000,
+        0b01011111,
+        0b10000001,
+        0b10000001,
+        0b01011111,
+        0b00110000,
+        0b00010000,
+    }
+};
+
+OLED_Icon OLED_EMPTY_ARROW_DOWN = {
+    {
+        0b00010000,
+        0b00011000,
+        0b11110100,
+        0b10000001,
+        0b10000001,
+        0b11110100,
+        0b00011000,
+        0b00010000,
+    }
+};
+
+OLED_Icon OLED_EMPTY_ARROW_LEFT = {
+    {
+        0b00011000,
+        0b00100100,
+        0b01000010,
+        0b11100111,
+        0b00100100,
+        0b00100100,
+        0b00100100,
+        0b00111100,
+    }
+};
+
+OLED_Icon OLED_EMPTY_ARROW_RIGHT = {
+    {
+        0b00111100,
+        0b00100100,
+        0b00100100,
+        0b00100100,
+        0b11100111,
+        0b01000010,
+        0b00100100,
+        0b00011000,
+    }
+};
+
+OLED_Icon OLED_ROUND = {
+    {
+        0b00111100,
+        0b01111110,
+        0b11111111,
+        0b11111111,
+        0b11111111,
+        0b11111111,
+        0b01111110,
+        0b00111100,
+    }
+};
+
+OLED_Icon OLED_CIRCLE = {
+    {
+        0b00111100,
+        0b01000010,
+        0b10000001,
+        0b10000001,
+        0b10000001,
+        0b10000001,
+        0b01000010,
+        0b00111100,
+    }
+};

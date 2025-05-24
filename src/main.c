@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
 
     OLED_Clear();
 
-    PAGE_Action();
+    PAGE_Lockers((PAGES_LockersStatus) {{LOCKER_EMPTY, LOCKER_OCCUPIED, LOCKER_EMPTY, LOCKER_EMPTY}});
 
     while (1) {
         
