@@ -2,20 +2,6 @@
 #include "gpio.h"
 #include "stm32g4xx_hal.h"
 
-void GPIO_config(void) {
-    // Configuration des broches DIR 
-    BSP_GPIO_pin_config(GPIOA, GPIO_PIN_5, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH, 0); // DIR A
-    BSP_GPIO_pin_config(GPIOA, GPIO_PIN_1, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH, 0); // DIR B
-
-    // Configuration des broches STEP 
-    BSP_GPIO_pin_config(GPIOA, GPIO_PIN_6, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH, 0); // STEP A
-    BSP_GPIO_pin_config(GPIOA, GPIO_PIN_0, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH, 0); // STEP B
-
-    // Configuration des broches ENABLE
-    BSP_GPIO_pin_config(GPIOA, GPIO_PIN_7, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH, 1); // ENABLE A
-    BSP_GPIO_pin_config(GPIOA, GPIO_PIN_4, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH, 1); // ENABLE B
-}
-
 void GPIO_step(int number_step, int direction, char driveur) {
     switch (driveur) {
         case 'A':
