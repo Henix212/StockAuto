@@ -9,6 +9,15 @@ void INIT_servo(void) {
     BSP_TIMER_enable_PWM(TIMER1_ID, TIM_CHANNEL_1, DEFAULT_POSITION, false, false);
 }
 
+void SET_position_manual(uint16_t position) {
+    // Position manuelle
+    if (position >= MIN_STEP && position <= MAX_STEP) {
+        BSP_TIMER_set_duty(TIMER1_ID, TIM_CHANNEL_1, position);
+    } else {
+        position = DEFAULT_POSITION;  // Si la position est invalide, revenir à la position par défaut
+    }
+}
+
 void SET_position(uint16_t position, char mouvement) {
     uint16_t step_position = 0;  // Initialize step_position to avoid undefined behavior
 

@@ -15,5 +15,6 @@ void close_(void);
 void open_(void);
 void hold_(uint32_t position);
 uint32_t Read_ADC_Averaged(uint8_t num_samples);
+void SET_position_manual(uint16_t position);
 
 #endif // SERVOMOTEUR_H

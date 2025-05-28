@@ -10,7 +10,10 @@ int main(int argc, char const *argv[])
     SET_default_position();  // Position par défaut
 
     while (1) {
-        close_();  // Fermer le servo
+        SET_position_manual(100);
+        HAL_Delay(1000);  // Attendre 1 seconde
+        SET_position_manual(150);
+        HAL_Delay(1000);  // Attendre 1 seconde
     }
 }
 
