@@ -37,6 +37,7 @@ extern "C" {
 #include "pages.h"
 #include "keypad.h"
 #include "servo_moteur.h"
+#include "driveurs.h"
 
 #include <stdio.h>
 

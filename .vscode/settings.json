@@ -2,6 +2,8 @@
     "files.associations": {
         "*.embeddedhtml": "html",
         "stm32g4xx_hal.h": "c",
-        "stm32g4xx_hal_i2c.h": "c"
+        "stm32g4xx_hal_i2c.h": "c",
+        "keypad.h": "c",
+        "driveurs.h": "c"
     }
 }
