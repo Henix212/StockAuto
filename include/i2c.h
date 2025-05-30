@@ -1,4 +1,10 @@
-/* USER CODE BEGIN Header */
+/**
+ *  I2C Library to send 1, 2 or an array of bytes through i2c1 channel. Generated with CubeMX 
+ *  and then added 3 functions at the end to simplify the i2c communication.
+ * 
+ *  @author StockAuto 
+ */
+
 /**
   ******************************************************************************
   * @file    i2c.h
@@ -16,8 +22,7 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
-/* Define to prevent recursive inclusion -------------------------------------*/
+
 #ifndef __I2C_H__
 #define __I2C_H__
 
@@ -25,22 +30,19 @@
 extern "C" {
 #endif
 
-/* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
 extern I2C_HandleTypeDef hi2c1;
-
-/* USER CODE BEGIN Private defines */
-
-/* USER CODE END Private defines */
 
 void MX_I2C1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+
+void I2C_TransmitByte(uint16_t addr, uint8_t data);
+
+void I2C_TransmitDualByte(uint16_t addr, uint8_t* data);
+
+void I2C_TransmitBytes(uint16_t addr, uint8_t* data, uint16_t sizeData);
 
 /* USER CODE END Prototypes */
 

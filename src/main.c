@@ -21,9 +21,6 @@
   */
 
 #include "main.h"
-#include "adc.h"
-#include "i2c.h"
-#include "gpio.h"
 
 int main(void)
 {
@@ -33,8 +30,13 @@ int main(void)
 
   MX_GPIO_Init();
   MX_I2C1_Init();
-  MX_ADC1_Init();
   MX_ADC2_Init();
+
+  OLED_Init();
+
+  OLED_Clear();
+
+  PAGE_Start();
 
   while (1)
   {

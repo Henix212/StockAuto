@@ -29,6 +29,13 @@ extern "C" {
 #endif
 
 #include "stm32g4xx_hal.h"
+#include "adc.h"
+#include "i2c.h"
+#include "gpio.h"
+#include "oled.h"
+#include "pages.h"
+
+#include <stdio.h>
 
 void Error_Handler(void);
 void SystemClock_Config(void);
