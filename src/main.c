@@ -32,16 +32,19 @@ int main(void)
   MX_I2C1_Init();
   MX_ADC2_Init();
 
+  INIT_servo();
+
   OLED_Init();
 
   OLED_Clear();
 
-  PAGE_Start();
-
   while (1)
   {
-
-  }
+      SET_position_manual(125);
+      HAL_Delay(1000);
+      SET_position_manual(155);
+      HAL_Delay(1000);
+}
 }
 
 /**

@@ -34,6 +34,8 @@ extern "C" {
 #include "gpio.h"
 #include "oled.h"
 #include "pages.h"
+#include "keypad.h"
+#include "servo_moteur.h"
 
 #include <stdio.h>
 
