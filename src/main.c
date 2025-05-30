@@ -31,6 +31,7 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   MX_ADC2_Init();
+  MX_TIM1_Init();
 
   INIT_servo();
 
@@ -40,11 +41,8 @@ int main(void)
 
   while (1)
   {
-      SET_position_manual(125);
-      HAL_Delay(1000);
-      SET_position_manual(155);
-      HAL_Delay(1000);
-}
+    
+  }
 }
 
 /**

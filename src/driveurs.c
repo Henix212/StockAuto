@@ -40,7 +40,7 @@ void GPIO_step(int number_step, int direction, char driveur) {
             break;
 
         default:
-            // Gestion d'erreur si le driveur est invalide
+            Error_Handler();
             break;
     }
 }

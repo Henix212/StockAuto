@@ -31,6 +31,7 @@ extern "C" {
 #include "stm32g4xx_hal.h"
 #include "adc.h"
 #include "i2c.h"
+#include "tim.h"
 #include "gpio.h"
 #include "oled.h"
 #include "pages.h"
