@@ -108,7 +108,7 @@ void PAGE_Execution(void) {
 
     // Page start
 
-    OLED_PutIcon(&OLED_CIRCLE, 60, 4);
+    OLED_PutIcon(&OLED_CIRCLE, 60, 3);
 
     // Page end
 }
