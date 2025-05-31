@@ -30,6 +30,9 @@ void PAGE_Start();
 
 void PAGE_Action();
 
-void PAGE_Lockers(PAGES_LockersStatus status);
+typedef enum StockAuto_Action StockAuto_Action;
+void PAGE_Lockers(PAGES_LockersStatus status, StockAuto_Action action);
+
+void PAGE_Execution(void);
 
 #endif /* __PAGES_H__ */

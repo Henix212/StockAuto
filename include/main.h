@@ -25,13 +25,24 @@ extern "C" {
 #include <stdio.h>
 
 // Structures
-
 typedef enum {
     START = 0,
     ACTION,
     LOCKER,
-    EXCUTING
+    EXECUTING
 } StockAuto_State;
+
+typedef enum StockAuto_Action {
+    GRAB = 0,
+    PUT
+} StockAuto_Action;
+
+/**
+ * Functions' prototypes
+ */
+
+void StockAuto_Grab(void);
+void StockAuto_Put(void);
 
 /* System fonctions by MX */
 

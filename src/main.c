@@ -6,6 +6,22 @@
 
 #include "main.h"
 
+static StockAuto_State current_state;
+
+// User inputs
+static StockAuto_Action action_selected;
+static uint8_t locker_selected_index = 0;
+
+// Locker memory + initializes it to all empty
+static PAGES_LockersStatus lockers_status = {
+    .map = {
+        LOCKER_EMPTY,
+        LOCKER_EMPTY,
+        LOCKER_EMPTY,
+        LOCKER_EMPTY
+    }
+};
+
 int main(void)
 {
     HAL_Init();
@@ -24,8 +40,155 @@ int main(void)
 
     while (1)
     {
-        
+        /**
+         * State machine
+         */
+        switch (current_state) {
+            case START:
+                /* Display a start screen */
+                PAGE_Start();
+                HAL_Delay(5000);
+                current_state = ACTION;
+                break;
+            case ACTION: {
+                /* Display a page to choose the action and get the key pressed (+process it) */
+                PAGE_Action();
+
+                // Wait for the user to press a key and returns the key
+                char key = keypad_getkey();
+
+                if (key == 'A') {
+                    action_selected = GRAB;
+                    current_state = LOCKER;
+                } else if (key == 'B') {
+                    action_selected = PUT;
+                    current_state = LOCKER;
+                } else {
+                    // Possible upgrade with an error message
+                }
+
+                break;
+            }
+            case LOCKER: {
+                /* Displays a page to choose locker and gets the key (+ process it) */
+                PAGE_Lockers(lockers_status, action_selected);
+
+                // Wait for user input and get the key
+                char key = keypad_getkey();
+
+                switch (key) {
+                    case '1':
+                        if (action_selected == PUT && lockers_status.map[0] == LOCKER_EMPTY) {
+                            locker_selected_index = 0;
+                            lockers_status.map[0] = LOCKER_OCCUPIED;
+                            current_state = EXECUTING;
+                        } else if (action_selected == GRAB && lockers_status.map[0] == LOCKER_OCCUPIED) {
+                            locker_selected_index = 0;
+                            lockers_status.map[0] = LOCKER_EMPTY;
+                            current_state = EXECUTING;
+                        } else {
+                            // Possible upgrade with an error message 
+                        }
+                        break;
+                    case '2':
+                        if (action_selected == PUT && lockers_status.map[1] == LOCKER_EMPTY) {
+                            locker_selected_index = 1;
+                            lockers_status.map[1] = LOCKER_OCCUPIED;
+                            current_state = EXECUTING;
+                        } else if (action_selected == GRAB && lockers_status.map[1] == LOCKER_OCCUPIED) {
+                            locker_selected_index = 1;
+                            lockers_status.map[1] = LOCKER_EMPTY;
+                            current_state = EXECUTING;
+                        } else {
+                            // Possible upgrade with an error message 
+                        }
+                        break;
+                    case '3':
+                        if (action_selected == PUT && lockers_status.map[2] == LOCKER_EMPTY) {
+                            locker_selected_index = 2;
+                            lockers_status.map[2] = LOCKER_OCCUPIED;
+                            current_state = EXECUTING;
+                        } else if (action_selected == GRAB && lockers_status.map[2] == LOCKER_OCCUPIED) {
+                            locker_selected_index = 2;
+                            lockers_status.map[2] = LOCKER_EMPTY;
+                            current_state = EXECUTING;
+                        } else {
+                            // Possible upgrade with an error message 
+                        }
+                        break;
+                    case '4':
+                        if (action_selected == PUT && lockers_status.map[3] == LOCKER_EMPTY) {
+                            locker_selected_index = 3;
+                            lockers_status.map[3] = LOCKER_OCCUPIED;
+                            current_state = EXECUTING;
+                        } else if (action_selected == GRAB && lockers_status.map[3] == LOCKER_OCCUPIED) {
+                            locker_selected_index = 3;
+                            lockers_status.map[3] = LOCKER_EMPTY;
+                            current_state = EXECUTING;
+                        } else {
+                            // Possible upgrade with an error message 
+                        }
+                        break;
+                    case '*':
+                        current_state = ACTION; // Maybe display a go back message on the screen
+                        break;
+                    default:
+                        // Possible upgrade with an error message
+                        break;
+                }
+
+                break;
+            }
+            case EXECUTING:
+                /* Executes the query */
+                PAGE_Execution();
+
+                if (action_selected == GRAB) {
+                    StockAuto_Grab();
+                } else {
+                    StockAuto_Put();
+                }
+
+                current_state = ACTION;
+
+                break;
+            default:
+                Error_Handler();
+                break;
+        }
     }
+}
+
+/**
+ * Functions
+ */
+
+/**
+ * @brief Move to the selected locker and grab the item then brings it to the user
+ */
+void StockAuto_Grab(void) {
+    // GPIO_step() HERE mobile allez chercher avec multiplicateur locket_selected_index
+    // GPIO_step() HERE bras etendre
+    close_();
+    // GPIO_step() HERE bras rétracter
+    // GPIO_step() HERE mobile revenir avec multiplicateur locket_selected_index
+    // GPIO_step() HERE bras étendre
+    open_();
+    // GPIO_step() HERE bras rétracter
+}
+
+/**
+ * @brief Grabs the user item then move to the selected locker and put there and then come back
+ */
+void StockAuto_Put(void) {
+    // GPIO_step() HERE bras etendre
+    close_();
+    // GPIO_step() HERE bras rétracter
+    // GPIO_step() HERE mobile allez chercher avec multiplicateur locket_selected_index
+    // GPIO_step() HERE bras étendre
+    open_();
+    // GPIO_step() HERE bras rétracter
+    // GPIO_step() HERE mobile revenir avec multiplicateur locket_selected_index
 }
 
 /**
