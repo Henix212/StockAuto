@@ -2,6 +2,6 @@
 #define KEYPAD_H
 
 extern volatile char last_key;
-int keypad_getkey(void);
+char keypad_getkey(void);
 
 #endif

@@ -3,6 +3,9 @@
 
 volatile char last_key = 0;
 
+// Wait for press
+static volatile uint8_t pressed_flag = 0;
+
 // Lignes (sorties) 
 GPIO_TypeDef* rowPorts[4] = {GPIOA, GPIOA, GPIOB, GPIOB};
 uint16_t rowPins[4] = {GPIO_PIN_9, GPIO_PIN_10, GPIO_PIN_0, GPIO_PIN_6};
@@ -19,29 +22,13 @@ char keymap[4][4] = {
     {'*', '0', '#', 'D'}
 };
 
-int keypad_getkey(void) {
-    for (int row = 0; row < 4; row++) {
-        // Toutes les lignes à HIGH
-        for (int i = 0; i < 4; i++) {
-            HAL_GPIO_WritePin(rowPorts[i], rowPins[i], GPIO_PIN_SET);
-        }
+char keypad_getkey(void) {
+    while(!pressed_flag) HAL_Delay(25);
 
-        // Active la ligne en cours
-        HAL_GPIO_WritePin(rowPorts[row], rowPins[row], GPIO_PIN_RESET);
+    pressed_flag = 0;
+    HAL_Delay(50);
 
-        for (int col = 0; col < 4; col++) {
-            if (HAL_GPIO_ReadPin(colPorts[col], colPins[col]) == GPIO_PIN_RESET) {
-                HAL_Delay(20);  // anti-rebond
-
-                // Attendre le relâchement
-                while (HAL_GPIO_ReadPin(colPorts[col], colPins[col]) == GPIO_PIN_RESET);
-
-                return keymap[row][col];
-            }
-        }
-    }
-
-    return 0;  // aucune touche pressée
+    return last_key;
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
@@ -60,7 +47,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
                 if (HAL_GPIO_ReadPin(colPorts[col], colPins[col]) == GPIO_PIN_RESET) {
                     char touche = keymap[row][col];
 
-                    OLED_PutChar(touche, OLED_FONT_COLOR_COLORED);
+                    pressed_flag = 1;
                     
                     last_key = touche;
                 }
