@@ -6,7 +6,7 @@
 
 // Stepper A
 static uint16_t PIN_EN_A = GPIO_PIN_7; 
-static uint16_t PIN_DIR_A = GPIO_PIN_3;
+static uint16_t PIN_DIR_A = GPIO_PIN_0;
 static uint16_t PIN_STEP_A = GPIO_PIN_2; 
 
 // Stepper B
@@ -20,9 +20,9 @@ void GPIO_step(int number_step, int direction, char driveur) {
             HAL_GPIO_WritePin(GPIOA, PIN_EN_A, GPIO_PIN_RESET); // ENABLE A
             
             if (direction == 1) {
-                HAL_GPIO_WritePin(GPIOA, PIN_DIR_A, GPIO_PIN_SET); // DIR A = 1
+                HAL_GPIO_WritePin(GPIOB, PIN_DIR_A, GPIO_PIN_SET); // DIR A = 1
             } else {
-                HAL_GPIO_WritePin(GPIOA, PIN_DIR_A, GPIO_PIN_RESET); // DIR A = 0
+                HAL_GPIO_WritePin(GPIOB, PIN_DIR_A, GPIO_PIN_RESET); // DIR A = 0
             }
             for (int i = 0; i < number_step; i++) {
                 HAL_GPIO_WritePin(GPIOA, PIN_STEP_A, GPIO_PIN_SET);   // STEP HIGH

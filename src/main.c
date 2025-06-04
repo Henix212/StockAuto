@@ -167,28 +167,28 @@ int main(void)
  * @brief Move to the selected locker and grab the item then brings it to the user
  */
 void StockAuto_Grab(void) {
-    // GPIO_step() HERE mobile allez chercher avec multiplicateur locket_selected_index
-    // GPIO_step() HERE bras etendre
+    GPIO_step(1300 * (1+locker_selected_index),1,'A');
+    GPIO_step(1000,1,'B');
     close_();
-    // GPIO_step() HERE bras rétracter
-    // GPIO_step() HERE mobile revenir avec multiplicateur locket_selected_index
-    // GPIO_step() HERE bras étendre
+    GPIO_step(1000,0,'B');
+    GPIO_step(1300 * (1+locker_selected_index),0,'A');
+    GPIO_step(1000,1,'B');
     open_();
-    // GPIO_step() HERE bras rétracter
+    GPIO_step(1000,0,'B');
 }
 
 /**
  * @brief Grabs the user item then move to the selected locker and put there and then come back
  */
 void StockAuto_Put(void) {
-    // GPIO_step() HERE bras etendre
+    GPIO_step(1000,1,'B');
     close_();
-    // GPIO_step() HERE bras rétracter
-    // GPIO_step() HERE mobile allez chercher avec multiplicateur locket_selected_index
-    // GPIO_step() HERE bras étendre
+    GPIO_step(1000,0,'B');
+    GPIO_step(1300 * (1+locker_selected_index),1,'A');
+    GPIO_step(1000,1,'B');
     open_();
-    // GPIO_step() HERE bras rétracter
-    // GPIO_step() HERE mobile revenir avec multiplicateur locket_selected_index
+    GPIO_step(1000,0,'B');
+    GPIO_step(1300 * (1+locker_selected_index),0,'A');
 }
 
 /**
