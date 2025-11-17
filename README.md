@@ -5,9 +5,9 @@
 
 ## Introduction
 
-**StockAuto** is an engineering project developed as part of our curriculum at **ESEO (École Supérieure d'Électricité, d'Électronique, d'Informatique et de Radiocommunications)**. The objective of this system is to design and build an **autonomous vehicle capable of automating stock management, storage, and inventory tasks** within a controlled environment (warehouse, storage area).
+**StockAuto** is an engineering project developed as part of our curriculum at **ESEO (École Supérieure d'Électronique de l'Ouest)**. The objective of this system is to design and build an **autonomous vehicle capable of automating stock management, storage tasks** within a controlled environment.
 
-This repository contains all project deliverables: source code, design schematics, 3D modeling files (for the gripper), and the complete documentation (project report).
+This repository contains all the source code of the project
 
 ---
 
@@ -30,7 +30,6 @@ The project includes the design of a **custom Printed Circuit Board (PCB)** to c
 * The integration of **decoupling capacitors** placed close to sensitive components.
 * Optimized tracks for thermal dissipation and signal integrity.
 * The addition of **test points** to simplify setup and debugging.
-
 ---
 
 ## 🚀 Quick Start
